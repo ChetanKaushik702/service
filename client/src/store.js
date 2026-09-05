@@ -6,9 +6,11 @@ import {
     userReducer,
 
 }from "./reducers/userReducer";
+import { forgotPasswordReducer } from "./reducers/forgotPasswordReducer";
 
 const reducer = combineReducers({
     user:userReducer,
+    forgotPassword:forgotPasswordReducer,
 });
 
 const middleware = [thunk];

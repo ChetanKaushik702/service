@@ -3,6 +3,7 @@ import Home from './pages/home/home';
 import Register from './pages/register/register';
 import Login from './pages/login/login';
 import ForgotPassword from './components/forgotpassword/forgotpassword';
+import ResetPassword from './pages/resetpassword/resetpassword';
 import {
   BrowserRouter as Router,
   Switch,
@@ -15,16 +16,19 @@ function App() {
    <Router>
    <Switch>
        <Route exact path="/">
-         <Home /> 
+         <Home />
        </Route>
        <Route path="/register">
-         <Register /> 
+         <Register />
        </Route>
        <Route path="/login">
-         <Login /> 
+         <Login />
        </Route>
        <Route path="/forgotpassword">
          <ForgotPassword/>
+       </Route>
+       <Route path="/password/reset/:token">
+         <ResetPassword/>
        </Route>
      </Switch>
    </Router>
