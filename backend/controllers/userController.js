@@ -3,6 +3,7 @@ const AsyncErrorHandler = require('../middlewares/asyncErrorHandler');
 const ErrorHandler = require('../utils/errorHandler');
 const sendToken = require('../utils/jwtToken');
 const sendEmail = require('../utils/sendEmail');
+const { resetPasswordTemplate } = require('../utils/emailTemplates');
 const crypto = require('crypto');
 const cloudinary = require("cloudinary");
 // register a new user
@@ -127,13 +128,14 @@ const forgotPassword = AsyncErrorHandler(async (req, res, next) => {
     const clientUrl = process.env.CLIENT_URL || `${req.protocol}://${req.get('host')}`;
     const resetPasswordUrl = `${clientUrl}/password/reset/${resetToken}`;
 
-    const message = `Your password reset token is:\n\n${resetPasswordUrl}.\n\nIf you have not requested for this email, please ignore this.`;
+    const { subject, text, html } = resetPasswordTemplate({ name: user.name, resetPasswordUrl });
 
     try {
         await sendEmail({
             email: user.email,
-            subject: 'ServeWell password recovery',
-            message
+            subject,
+            message: text,
+            html
         });
 
         res.status(200).json({
