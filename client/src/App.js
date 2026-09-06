@@ -1,4 +1,6 @@
-
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { loadUser } from './actions/userAction';
 import Home from './pages/home/home';
 import Register from './pages/register/register';
 import Login from './pages/login/login';
@@ -18,6 +20,12 @@ import {
 } from "react-router-dom";
 
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(loadUser());
+  }, [dispatch]);
+
   return (
    <>
    <Router>

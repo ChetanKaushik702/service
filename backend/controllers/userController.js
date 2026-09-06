@@ -55,6 +55,14 @@ const logInUser = AsyncErrorHandler(async (req, res, next) => {
     sendToken(user, 200, res);
 })
 
+// get currently logged in user
+const getUserProfile = AsyncErrorHandler(async (req, res, next) => {
+    res.status(200).json({
+        success: true,
+        user: req.user,
+    });
+});
+
 // logout user
 const logOutUser = AsyncErrorHandler(async (req, res, next) => {
     res.cookie('token', null, {
@@ -139,6 +147,7 @@ module.exports = {
     registerUser,
     logInUser,
     logOutUser,
+    getUserProfile,
     forgotPassword,
     resetPassword
 }
