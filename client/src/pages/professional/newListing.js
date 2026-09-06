@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useAlert } from "react-alert";
+import toast from "react-hot-toast";
 import Header from "../../components/header/header";
 import { createListing, clearErrors } from "../../actions/listingAction";
 import { Button } from "@/components/ui/button";
@@ -30,7 +30,6 @@ const categories = [
 export default function NewListing() {
   const dispatch = useDispatch();
   const history = useHistory();
-  const alert = useAlert();
   const { loading, error, success } = useSelector((state) => state.newListing);
 
   const [form, setForm] = useState({
@@ -44,14 +43,14 @@ export default function NewListing() {
 
   useEffect(() => {
     if (error) {
-      alert.error(error);
+      toast.error(error);
       dispatch(clearErrors());
     }
     if (success) {
-      alert.success("Listing created successfully");
+      toast.success("Listing created successfully");
       history.push("/professional/listings");
     }
-  }, [dispatch, error, success, alert, history]);
+  }, [dispatch, error, success, history]);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });

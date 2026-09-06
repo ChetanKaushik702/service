@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import Header from "../../components/header/header";
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useAlert } from "react-alert";
+import toast from "react-hot-toast";
 import { useHistory } from "react-router-dom";
 import gsap from "gsap";
 import Loader from "../../components/Loader/Loader";
@@ -25,7 +25,6 @@ function Register() {
   );
   const dispatch = useDispatch();
   const history = useHistory();
-  const alert = useAlert();
   const [user, setNewUser] = useState({
     name: "",
     email: "",
@@ -63,13 +62,13 @@ function Register() {
 
   useEffect(() => {
     if (error) {
-      alert.error(error);
+      toast.error(error);
       dispatch(clearErrors());
     }
     if (isAuthenticated) {
       history.push("/");
     }
-  }, [dispatch, error, alert, history, isAuthenticated]);
+  }, [dispatch, error, history, isAuthenticated]);
 
   return (
     <Fragment>

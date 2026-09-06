@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useAlert } from "react-alert";
+import toast from "react-hot-toast";
 import { Pencil, Trash2 } from "lucide-react";
 import Header from "../../components/header/header";
 import Loader from "../../components/Loader/Loader";
@@ -12,21 +12,20 @@ import { Badge } from "@/components/ui/badge";
 
 export default function ProfessionalListings() {
   const dispatch = useDispatch();
-  const alert = useAlert();
   const { loading, listings, error } = useSelector((state) => state.myListings);
   const { isDeleted, error: deleteError } = useSelector((state) => state.newListing);
 
   useEffect(() => {
     if (error) {
-      alert.error(error);
+      toast.error(error);
       dispatch(clearErrors());
     }
     if (deleteError) {
-      alert.error(deleteError);
+      toast.error(deleteError);
       dispatch(clearErrors());
     }
     dispatch(getMyListings());
-  }, [dispatch, error, deleteError, isDeleted, alert]);
+  }, [dispatch, error, deleteError, isDeleted]);
 
   const handleDelete = (id) => {
     dispatch(deleteListing(id));
