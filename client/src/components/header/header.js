@@ -47,13 +47,28 @@ function Header() {
           Forgot Password
         </Link>
       )}
+      {isAuthenticated && user?.role === "professional" && (
+        <Link
+          to="/professional/listings"
+          onClick={onNavigate}
+          className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+        >
+          My Listings
+        </Link>
+      )}
     </>
   );
 
   const AuthActions = ({ onNavigate }) =>
     isAuthenticated ? (
       <div className="flex items-center gap-3">
-        <span className="text-sm font-semibold">Hi, {user && user.name}</span>
+        <Link
+          to="/profile"
+          onClick={onNavigate}
+          className="text-sm font-semibold hover:underline"
+        >
+          Hi, {user && user.name}
+        </Link>
         <Button variant="outline" size="sm" onClick={handleLogout}>
           Logout
         </Button>

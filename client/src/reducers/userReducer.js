@@ -10,6 +10,8 @@ import {
     LOAD_USER_REQUEST,
     LOAD_USER_SUCCESS,
     LOAD_USER_FAIL,
+    UPDATE_PROFILE_SUCCESS,
+    UPDATE_PASSWORD_SUCCESS,
     CLEAR_ERRORS,
 }from "../constants/userConstants";
 
@@ -30,6 +32,12 @@ export const userReducer = (state = {user:null, isAuthenticated:false, loading:t
                 ...state,
                 loading: false,
                 isAuthenticated: true,
+                user:action.payload,
+            };
+        case UPDATE_PROFILE_SUCCESS:
+        case UPDATE_PASSWORD_SUCCESS:
+            return{
+                ...state,
                 user:action.payload,
             };
         case LOAD_USER_FAIL:
