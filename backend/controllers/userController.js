@@ -8,6 +8,7 @@ const cloudinary = require("cloudinary");
 // register a new user
 const registerUser = AsyncErrorHandler(async (req, res, next) => {
     const { name, email, password } = req.body;
+    const role = req.body.role === 'professional' ? 'professional' : 'user';
 
     let avatar = undefined;
     if (req.body.avatar) {
@@ -27,6 +28,7 @@ const registerUser = AsyncErrorHandler(async (req, res, next) => {
       email,
       password,
       avatar,
+      role,
     });
     sendToken(user, 201, res);
 });
