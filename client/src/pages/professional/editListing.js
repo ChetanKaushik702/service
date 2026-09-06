@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useHistory, useParams } from "react-router-dom";
+import { Link, useHistory, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useAlert } from "react-alert";
 import Header from "../../components/header/header";
@@ -33,7 +33,7 @@ export default function EditListing() {
   const dispatch = useDispatch();
   const history = useHistory();
   const alert = useAlert();
-  const { loading: detailLoading, listing } = useSelector((state) => state.listingDetails);
+  const { loading: detailLoading, listing, error: detailError } = useSelector((state) => state.listingDetails);
   const { loading, error, isUpdated } = useSelector((state) => state.newListing);
 
   const [form, setForm] = useState(null);
@@ -75,11 +75,25 @@ export default function EditListing() {
     dispatch(updateListing(id, { ...form, rate: Number(form.rate) }));
   };
 
-  if (detailLoading || !form) {
+  if (detailLoading) {
     return (
       <>
         <Header />
         <Loader />
+      </>
+    );
+  }
+
+  if (detailError || !form) {
+    return (
+      <>
+        <Header />
+        <div className="container flex flex-col items-center gap-4 py-20 text-center">
+          <p className="text-muted-foreground">{detailError || "This listing could not be found."}</p>
+          <Button asChild>
+            <Link to="/professional/listings">Back to my listings</Link>
+          </Button>
+        </div>
       </>
     );
   }

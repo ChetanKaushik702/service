@@ -33,7 +33,7 @@ export const login =(email,password) => async (dispatch) => {
         dispatch({type: LOGIN_SUCCESS, payload: data.user});
 
     } catch(error){
-        dispatch({type: LOGIN_FAIL, payload: error.response.data.message});
+        dispatch({type: LOGIN_FAIL, payload: error.response?.data?.message || "Something went wrong. Please try again."});
     }
 
 };
@@ -49,7 +49,7 @@ export const register = (userData) => async (dispatch) => {
     }catch (error){
         dispatch({
             type:REGISTER_FAIL,
-            payload:error.response.data.message,
+            payload:error.response?.data?.message || "Something went wrong. Please try again.",
         });
     }
 
@@ -72,7 +72,7 @@ export const logout = () => async (dispatch) => {
         await axios.get(`/api/v1/logout`);
         dispatch({type: LOGOUT_SUCCESS});
     } catch(error){
-        dispatch({type: LOGOUT_FAIL, payload: error.response.data.message});
+        dispatch({type: LOGOUT_FAIL, payload: error.response?.data?.message || "Something went wrong. Please try again."});
     }
 };
 
@@ -88,7 +88,7 @@ export const forgotPassword = (email) => async (dispatch) => {
         );
         dispatch({type: FORGOT_PASSWORD_SUCCESS, payload: data.message});
     } catch(error){
-        dispatch({type: FORGOT_PASSWORD_FAIL, payload: error.response.data.message});
+        dispatch({type: FORGOT_PASSWORD_FAIL, payload: error.response?.data?.message || "Something went wrong. Please try again."});
     }
 };
 
@@ -104,7 +104,7 @@ export const resetPassword = (token, passwords) => async (dispatch) => {
         );
         dispatch({type: RESET_PASSWORD_SUCCESS, payload: data.success});
     } catch(error){
-        dispatch({type: RESET_PASSWORD_FAIL, payload: error.response.data.message});
+        dispatch({type: RESET_PASSWORD_FAIL, payload: error.response?.data?.message || "Something went wrong. Please try again."});
     }
 };
 

@@ -28,7 +28,7 @@ export const getListings = (queryString = "") => async (dispatch) => {
         const { data } = await axios.get(`/api/v1/listings${queryString}`);
         dispatch({ type: LISTING_LIST_SUCCESS, payload: data });
     } catch (error) {
-        dispatch({ type: LISTING_LIST_FAIL, payload: error.response.data.message });
+        dispatch({ type: LISTING_LIST_FAIL, payload: error.response?.data?.message || "Something went wrong. Please try again." });
     }
 };
 
@@ -39,7 +39,7 @@ export const getListingDetail = (id) => async (dispatch) => {
         const { data } = await axios.get(`/api/v1/listings/${id}`);
         dispatch({ type: LISTING_DETAIL_SUCCESS, payload: data.listing });
     } catch (error) {
-        dispatch({ type: LISTING_DETAIL_FAIL, payload: error.response.data.message });
+        dispatch({ type: LISTING_DETAIL_FAIL, payload: error.response?.data?.message || "Something went wrong. Please try again." });
     }
 };
 
@@ -50,7 +50,7 @@ export const getMyListings = () => async (dispatch) => {
         const { data } = await axios.get(`/api/v1/listings/me/mine`);
         dispatch({ type: MY_LISTINGS_SUCCESS, payload: data.listings });
     } catch (error) {
-        dispatch({ type: MY_LISTINGS_FAIL, payload: error.response.data.message });
+        dispatch({ type: MY_LISTINGS_FAIL, payload: error.response?.data?.message || "Something went wrong. Please try again." });
     }
 };
 
@@ -62,7 +62,7 @@ export const createListing = (listingData) => async (dispatch) => {
         const { data } = await axios.post(`/api/v1/listings`, listingData, config);
         dispatch({ type: NEW_LISTING_SUCCESS, payload: data.listing });
     } catch (error) {
-        dispatch({ type: NEW_LISTING_FAIL, payload: error.response.data.message });
+        dispatch({ type: NEW_LISTING_FAIL, payload: error.response?.data?.message || "Something went wrong. Please try again." });
     }
 };
 
@@ -74,7 +74,7 @@ export const updateListing = (id, listingData) => async (dispatch) => {
         const { data } = await axios.put(`/api/v1/listings/${id}`, listingData, config);
         dispatch({ type: UPDATE_LISTING_SUCCESS, payload: data.listing });
     } catch (error) {
-        dispatch({ type: UPDATE_LISTING_FAIL, payload: error.response.data.message });
+        dispatch({ type: UPDATE_LISTING_FAIL, payload: error.response?.data?.message || "Something went wrong. Please try again." });
     }
 };
 
@@ -85,7 +85,7 @@ export const deleteListing = (id) => async (dispatch) => {
         await axios.delete(`/api/v1/listings/${id}`);
         dispatch({ type: DELETE_LISTING_SUCCESS });
     } catch (error) {
-        dispatch({ type: DELETE_LISTING_FAIL, payload: error.response.data.message });
+        dispatch({ type: DELETE_LISTING_FAIL, payload: error.response?.data?.message || "Something went wrong. Please try again." });
     }
 };
 
