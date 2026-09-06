@@ -4,7 +4,7 @@ import gsap from "gsap";
 import Loader from "../../components/Loader/Loader";
 import { useDispatch, useSelector } from "react-redux";
 import { clearErrors, login } from "../../actions/userAction";
-import { useAlert } from "react-alert";
+import toast from "react-hot-toast";
 
 import Header from "../../components/header/header";
 import { Button } from "@/components/ui/button";
@@ -21,7 +21,6 @@ import {
 export default function Login() {
   const history = useHistory();
   const location = useLocation();
-  const alert = useAlert();
 
   const { error, loading, isAuthenticated } = useSelector(
     (state) => state.user
@@ -50,13 +49,13 @@ export default function Login() {
 
   useEffect(() => {
     if (error) {
-      alert.error(error);
+      toast.error(error);
       dispatch(clearErrors());
     }
     if (isAuthenticated) {
       history.push("/");
     }
-  }, [dispatch, error, alert, history, isAuthenticated, redirect]);
+  }, [dispatch, error, history, isAuthenticated, redirect]);
 
   return (
     <Fragment>

@@ -63,6 +63,39 @@ const getUserProfile = AsyncErrorHandler(async (req, res, next) => {
     });
 });
 
+// update name/email
+const updateProfile = AsyncErrorHandler(async (req, res, next) => {
+    const { name, email } = req.body;
+
+    const user = await User.findByIdAndUpdate(
+        req.user._id,
+        { name, email },
+        { new: true, runValidators: true }
+    );
+
+    res.status(200).json({
+        success: true,
+        user,
+    });
+});
+
+// update password
+const updatePassword = AsyncErrorHandler(async (req, res, next) => {
+    const { currentPassword, newPassword } = req.body;
+
+    const user = await User.findById(req.user._id).select('+password');
+
+    const isPasswordMatched = await user.comparePassword(currentPassword);
+    if (!isPasswordMatched) {
+        return next(new ErrorHandler('Current password is incorrect', 400));
+    }
+
+    user.password = newPassword;
+    await user.save();
+
+    sendToken(user, 200, res);
+});
+
 // logout user
 const logOutUser = AsyncErrorHandler(async (req, res, next) => {
     res.cookie('token', null, {
@@ -148,6 +181,8 @@ module.exports = {
     logInUser,
     logOutUser,
     getUserProfile,
+    updateProfile,
+    updatePassword,
     forgotPassword,
     resetPassword
 }

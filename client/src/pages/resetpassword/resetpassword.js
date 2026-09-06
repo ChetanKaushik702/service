@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useAlert } from "react-alert";
+import toast from "react-hot-toast";
 import { useHistory, useParams } from "react-router-dom";
 import gsap from "gsap";
 import Header from "../../components/header/header";
@@ -19,7 +19,6 @@ import {
 
 function ResetPassword() {
   const dispatch = useDispatch();
-  const alert = useAlert();
   const history = useHistory();
   const { token } = useParams();
   const { error, success, loading } = useSelector((state) => state.forgotPassword);
@@ -43,14 +42,14 @@ function ResetPassword() {
 
   useEffect(() => {
     if (error) {
-      alert.error(error);
+      toast.error(error);
       dispatch(clearErrors());
     }
     if (success) {
-      alert.success("Password updated successfully");
+      toast.success("Password updated successfully");
       history.push("/login");
     }
-  }, [dispatch, error, success, alert, history]);
+  }, [dispatch, error, success, history]);
 
   return (
     <Fragment>

@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useAlert } from "react-alert";
+import toast from "react-hot-toast";
 import gsap from "gsap";
 import Header from "../../components/header/header";
 import Loader from "../../components/Loader/Loader";
@@ -18,7 +18,6 @@ import {
 
 function ForgotPassword() {
   const dispatch = useDispatch();
-  const alert = useAlert();
   const { error, message, loading } = useSelector((state) => state.forgotPassword);
   const [email, setEmail] = useState("");
   const cardRef = useRef(null);
@@ -39,13 +38,13 @@ function ForgotPassword() {
 
   useEffect(() => {
     if (error) {
-      alert.error(error);
+      toast.error(error);
       dispatch(clearErrors());
     }
     if (message) {
-      alert.success(message);
+      toast.success(message);
     }
-  }, [dispatch, error, message, alert]);
+  }, [dispatch, error, message]);
 
   return (
     <Fragment>

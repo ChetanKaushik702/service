@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { useHistory, useParams } from "react-router-dom";
+import { Link, useHistory, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useAlert } from "react-alert";
+import toast from "react-hot-toast";
 import Header from "../../components/header/header";
 import Loader from "../../components/Loader/Loader";
 import { getListingDetail, updateListing, clearErrors } from "../../actions/listingAction";
@@ -32,8 +32,7 @@ export default function EditListing() {
   const { id } = useParams();
   const dispatch = useDispatch();
   const history = useHistory();
-  const alert = useAlert();
-  const { loading: detailLoading, listing } = useSelector((state) => state.listingDetails);
+  const { loading: detailLoading, listing, error: detailError } = useSelector((state) => state.listingDetails);
   const { loading, error, isUpdated } = useSelector((state) => state.newListing);
 
   const [form, setForm] = useState(null);
@@ -57,14 +56,14 @@ export default function EditListing() {
 
   useEffect(() => {
     if (error) {
-      alert.error(error);
+      toast.error(error);
       dispatch(clearErrors());
     }
     if (isUpdated) {
-      alert.success("Listing updated successfully");
+      toast.success("Listing updated successfully");
       history.push("/professional/listings");
     }
-  }, [dispatch, error, isUpdated, alert, history]);
+  }, [dispatch, error, isUpdated, history]);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -75,11 +74,25 @@ export default function EditListing() {
     dispatch(updateListing(id, { ...form, rate: Number(form.rate) }));
   };
 
-  if (detailLoading || !form) {
+  if (detailLoading) {
     return (
       <>
         <Header />
         <Loader />
+      </>
+    );
+  }
+
+  if (detailError || !form) {
+    return (
+      <>
+        <Header />
+        <div className="container flex flex-col items-center gap-4 py-20 text-center">
+          <p className="text-muted-foreground">{detailError || "This listing could not be found."}</p>
+          <Button asChild>
+            <Link to="/professional/listings">Back to my listings</Link>
+          </Button>
+        </div>
       </>
     );
   }
