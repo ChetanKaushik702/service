@@ -21,3 +21,11 @@
     height: 25px;
     width: 25px;
 }
+.nav-user{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.nav-greeting{
+    font-weight: 600;
+}

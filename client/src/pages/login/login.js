@@ -50,7 +50,7 @@ export default function Login(){
                    <div className="row">
             <div className="login-form">
                 <h2>Login</h2>
-                <form autocomplete="off" onSubmit={loginSubmit}>
+                <form autoComplete="off" onSubmit={loginSubmit}>
                     <input type="email" name="email" id="login-ml" required placeholder="Enter your Email" value={loginEmail}
                     onChange={(e) => setLoginEmail(e.target.value)}/>
                     <input type="password" name="password" id="login-pd" required placeholder="Enter your password" value={loginPassword}

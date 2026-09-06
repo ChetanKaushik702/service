@@ -4,9 +4,8 @@ import Header from "../../components/header/header";
 import React, {Fragment,useState,useEffect} from "react";
 import {useDispatch,useSelector} from "react-redux";
 import {useAlert} from "react-alert";
-import {useHistory,useLocation} from "react-router-dom";
+import {useHistory} from "react-router-dom";
 import Loader from "../../components/Loader/Loader";
-import axios from 'axios';
 import { clearErrors, register } from "../../actions/userAction";
 
 function Register() {
@@ -14,11 +13,13 @@ function Register() {
     (state) => state.user
   );
   const dispatch = useDispatch();
+  const history = useHistory();
+  const alert = useAlert();
   const [user, setNewUser] = useState(
     {
         name: '',
         email: '',
-        
+
         password:'',
     }
 );
@@ -27,7 +28,7 @@ const handleSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData();
     formData.append('password', user.password);
- 
+
     formData.append('email', user.email);
     formData.append('name', user.name);
     dispatch(register(formData));
@@ -36,6 +37,16 @@ const handleSubmit = (e) => {
 const handleChange = (e) => {
     setNewUser({...user, [e.target.name]: e.target.value});
 }
+
+useEffect(() => {
+    if (error) {
+        alert.error(error);
+        dispatch(clearErrors());
+    }
+    if (isAuthenticated) {
+        history.push('/');
+    }
+}, [dispatch, error, alert, history, isAuthenticated]);
 
 
   
@@ -47,12 +58,12 @@ const handleChange = (e) => {
            ):(
                <Fragment>
         <Header />
-        <div className="reg-body"> 
-        <div class="container-reg">
-        <div class="logo">
+        <div className="reg-body">
+        <div className="container-reg">
+        <div className="logo">
             <h3>Service Fare</h3>
         </div>
-            <div class="register-form toggle">
+            <div className="register-form toggle">
                 <h2 className="heading2">Register</h2>
                 <form
                 className="signUpForm"

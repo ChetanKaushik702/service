@@ -7,22 +7,27 @@ const crypto = require('crypto');
 const cloudinary = require("cloudinary");
 // register a new user
 const registerUser = AsyncErrorHandler(async (req, res, next) => {
-    const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
-      folder: "avatars",
-      width: 150,
-      crop: "scale",
-    });
     const { name, email, password } = req.body;
+
+    let avatar = undefined;
+    if (req.body.avatar) {
+      const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
+        folder: "avatars",
+        width: 150,
+        crop: "scale",
+      });
+      avatar = {
+        public_id: myCloud.public_id,
+        url: myCloud.secure_url,
+      };
+    }
+
     const user = await User.create({
       name,
       email,
       password,
-      avatar: {
-        public_id: myCloud.public_id,
-        url: myCloud.secure_url,
-      },
+      avatar,
     });
-    console.log(user);
     sendToken(user, 201, res);
 });
   
@@ -45,7 +50,6 @@ const logInUser = AsyncErrorHandler(async (req, res, next) => {
     if (!isPasswordMatched) {
         return next(new ErrorHandler('Invalid email or password', 403));
     }
-    console.log(user);
     sendToken(user, 200, res);
 })
 
@@ -53,6 +57,8 @@ const logInUser = AsyncErrorHandler(async (req, res, next) => {
 const logOutUser = AsyncErrorHandler(async (req, res, next) => {
     res.cookie('token', null, {
         httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
         expires: new Date(Date.now())
     });
 
@@ -75,7 +81,8 @@ const forgotPassword = AsyncErrorHandler(async (req, res, next) => {
 
     await user.save({ validateBeforeSave: false });
 
-    const resetPasswordUrl = `${req.protocol}://${req.get('host')}/api/v1/user/password/reset/${resetToken}`;
+    const clientUrl = process.env.CLIENT_URL || `${req.protocol}://${req.get('host')}`;
+    const resetPasswordUrl = `${clientUrl}/password/reset/${resetToken}`;
 
     const message = `Your password reset token is:\n\n${resetPasswordUrl}.\n\nIf you have not requested for this email, please ignore this.`;
 
