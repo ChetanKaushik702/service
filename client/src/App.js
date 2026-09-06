@@ -11,6 +11,8 @@ import ServiceDetail from './pages/services/serviceDetail';
 import ProfessionalListings from './pages/professional/listings';
 import NewListing from './pages/professional/newListing';
 import EditListing from './pages/professional/editListing';
+import ProfessionalRequests from './pages/professional/requests';
+import MyRequests from './pages/requests/myRequests';
 import Profile from './pages/profile/profile';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 import {
@@ -63,6 +65,12 @@ function App() {
        </ProtectedRoute>
        <ProtectedRoute exact path="/profile">
          <Profile/>
+       </ProtectedRoute>
+       <ProtectedRoute exact path="/requests">
+         <MyRequests/>
+       </ProtectedRoute>
+       <ProtectedRoute exact path="/professional/requests" role="professional">
+         <ProfessionalRequests/>
        </ProtectedRoute>
        <Route path="*">
          <Redirect to="/" />

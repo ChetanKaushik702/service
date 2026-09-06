@@ -15,9 +15,11 @@ app.use(cookieParser());
 // setting up routes
 const user = require('./routes/userRoute');
 const listings = require('./routes/listingRoute');
+const requests = require('./routes/requestRoute');
 
 app.use('/api/v1', user);
 app.use('/api/v1', listings);
+app.use('/api/v1', requests);
 
 app.use(errorMiddlerware);
 

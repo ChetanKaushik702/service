@@ -12,6 +12,13 @@ module.exports = {
   webpack: {
     alias: {
       '@': path.resolve(__dirname, 'src'),
+      // goober (react-hot-toast's CSS-in-JS dep) declares sideEffects:false
+      // on a CommonJS build; webpack 4's production tree-shaking mishandles
+      // that combination and silently drops the `keyframes` export
+      // ("j.keyframes is not a function" at runtime). Its ESM build doesn't
+      // have this problem since webpack's own static export analysis
+      // (built for ESM) applies correctly there.
+      goober: path.resolve(__dirname, 'node_modules/goober/dist/goober.esm.js'),
     },
     configure: (webpackConfig) => {
       // react-scripts 4 / webpack 4 predates the package.json "exports"

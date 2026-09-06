@@ -48,12 +48,30 @@ function Header() {
         </Link>
       )}
       {isAuthenticated && user?.role === "professional" && (
+        <>
+          <Link
+            to="/professional/listings"
+            onClick={onNavigate}
+            className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+          >
+            My Listings
+          </Link>
+          <Link
+            to="/professional/requests"
+            onClick={onNavigate}
+            className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+          >
+            Requests
+          </Link>
+        </>
+      )}
+      {isAuthenticated && user?.role === "user" && (
         <Link
-          to="/professional/listings"
+          to="/requests"
           onClick={onNavigate}
           className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
         >
-          My Listings
+          My Requests
         </Link>
       )}
     </>

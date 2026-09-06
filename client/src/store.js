@@ -14,6 +14,12 @@ import {
     myListingsReducer,
     newListingReducer,
 } from "./reducers/listingReducer";
+import {
+    newRequestReducer,
+    sentRequestsReducer,
+    receivedRequestsReducer,
+    updateRequestReducer,
+} from "./reducers/requestReducer";
 
 const reducer = combineReducers({
     user:userReducer,
@@ -23,6 +29,10 @@ const reducer = combineReducers({
     listingDetails: listingDetailsReducer,
     myListings: myListingsReducer,
     newListing: newListingReducer,
+    newRequest: newRequestReducer,
+    sentRequests: sentRequestsReducer,
+    receivedRequests: receivedRequestsReducer,
+    updateRequest: updateRequestReducer,
 });
 
 const middleware = [thunk];
