@@ -1,94 +1,115 @@
-import React from "react";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { Menu } from "lucide-react";
 import logo from "../../logo.svg";
 import { logout } from "../../actions/userAction";
-import "./header.css";
+import { Button } from "@/components/ui/button";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
 
 function Header() {
   const dispatch = useDispatch();
   const { isAuthenticated, user } = useSelector((state) => state.user);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   const handleLogout = () => {
     dispatch(logout());
+    setMobileOpen(false);
   };
 
-  return (
+  const NavLinks = ({ onNavigate }) => (
     <>
-      <nav className="navbar navbar-expand-lg navbar-light bg-light">
-        <a className="navbar-brand" href="/">
-          <img className="navbar-logo" src={logo} alt="" />
-          ServiceFare
-        </a>
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-toggle="collapse"
-          data-target="#navbarTogglerDemo02"
-          aria-controls="navbarTogglerDemo02"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
+      <Link
+        to="/"
+        onClick={onNavigate}
+        className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+      >
+        Home
+      </Link>
+      <Link
+        to="/services"
+        onClick={onNavigate}
+        className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+      >
+        Services
+      </Link>
+      {!isAuthenticated && (
+        <Link
+          to="/forgotpassword"
+          onClick={onNavigate}
+          className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
         >
-          <span className="navbar-toggler-icon"></span>
-        </button>
-
-        <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
-          <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
-            <li className="nav-item">
-              <a className="nav-link" href="/">
-                Home
-              </a>
-            </li>
-            {!isAuthenticated && (
-              <li className="nav-item">
-                <a className="nav-link" href="/forgotpassword">
-                  Forgot Password
-                </a>
-              </li>
-            )}
-          </ul>
-          {isAuthenticated ? (
-            <div className="nav-user">
-              <span className="nav-greeting">Hi, {user && user.name}</span>
-              <button
-                className="btn btn-outline-danger my-2 my-sm-0"
-                type="button"
-                onClick={handleLogout}
-              >
-                Logout
-              </button>
-            </div>
-          ) : (
-            <>
-              <a href="/register">
-                <button className="btn btn-outline-success my-2 my-sm-0" type="button">
-                  <img
-                    className="login"
-                    alt="..."
-                    src="https://img.icons8.com/external-bearicons-outline-color-bearicons/64/000000/external-sign-up-call-to-action-bearicons-outline-color-bearicons-1.png"
-                  />
-                  Register
-                </button>
-              </a>
-              <div>
-                <a href="/login">
-                  <button
-                    className="btn btn-outline-success my-2 my-sm-0"
-                    type="button"
-                  >
-                    <img
-                      alt="..."
-                      className="login"
-                      src="https://img.icons8.com/fluency/64/000000/login-rounded-right.png"
-                    />
-                    Login
-                  </button>
-                </a>
-              </div>
-            </>
-          )}
-        </div>
-      </nav>
+          Forgot Password
+        </Link>
+      )}
     </>
+  );
+
+  const AuthActions = ({ onNavigate }) =>
+    isAuthenticated ? (
+      <div className="flex items-center gap-3">
+        <span className="text-sm font-semibold">Hi, {user && user.name}</span>
+        <Button variant="outline" size="sm" onClick={handleLogout}>
+          Logout
+        </Button>
+      </div>
+    ) : (
+      <div className="flex items-center gap-2">
+        <Button variant="outline" size="sm" asChild onClick={onNavigate}>
+          <Link to="/register">Register</Link>
+        </Button>
+        <Button size="sm" asChild onClick={onNavigate}>
+          <Link to="/login">Login</Link>
+        </Button>
+      </div>
+    );
+
+  return (
+    <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="container flex h-16 items-center justify-between">
+        <Link to="/" className="flex items-center gap-2">
+          <img src={logo} alt="" className="h-9 w-9" />
+          <span className="text-lg font-bold">ServiceFare</span>
+        </Link>
+
+        <nav className="hidden items-center gap-6 md:flex">
+          <NavLinks />
+        </nav>
+
+        <div className="hidden md:flex">
+          <AuthActions />
+        </div>
+
+        <Button
+          variant="ghost"
+          size="icon"
+          className="md:hidden"
+          onClick={() => setMobileOpen(true)}
+          aria-label="Open menu"
+        >
+          <Menu className="h-5 w-5" />
+        </Button>
+
+        <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+          <SheetContent side="right" className="w-3/4">
+            <SheetHeader>
+              <SheetTitle>ServiceFare</SheetTitle>
+            </SheetHeader>
+            <div className="mt-6 flex flex-col gap-4">
+              <NavLinks onNavigate={() => setMobileOpen(false)} />
+              <div className="mt-2 border-t pt-4">
+                <AuthActions onNavigate={() => setMobileOpen(false)} />
+              </div>
+            </div>
+          </SheetContent>
+        </Sheet>
+      </div>
+    </header>
   );
 }
 
