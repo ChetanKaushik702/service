@@ -8,6 +8,7 @@ const cloudinary = require("cloudinary");
 // register a new user
 const registerUser = AsyncErrorHandler(async (req, res, next) => {
     const { name, email, password } = req.body;
+    const role = req.body.role === 'professional' ? 'professional' : 'user';
 
     let avatar = undefined;
     if (req.body.avatar) {
@@ -27,6 +28,7 @@ const registerUser = AsyncErrorHandler(async (req, res, next) => {
       email,
       password,
       avatar,
+      role,
     });
     sendToken(user, 201, res);
 });
@@ -52,6 +54,14 @@ const logInUser = AsyncErrorHandler(async (req, res, next) => {
     }
     sendToken(user, 200, res);
 })
+
+// get currently logged in user
+const getUserProfile = AsyncErrorHandler(async (req, res, next) => {
+    res.status(200).json({
+        success: true,
+        user: req.user,
+    });
+});
 
 // logout user
 const logOutUser = AsyncErrorHandler(async (req, res, next) => {
@@ -137,6 +147,7 @@ module.exports = {
     registerUser,
     logInUser,
     logOutUser,
+    getUserProfile,
     forgotPassword,
     resetPassword
 }

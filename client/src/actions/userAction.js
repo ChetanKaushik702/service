@@ -7,6 +7,9 @@ import{
     REGISTER_FAIL,
     LOGOUT_SUCCESS,
     LOGOUT_FAIL,
+    LOAD_USER_REQUEST,
+    LOAD_USER_SUCCESS,
+    LOAD_USER_FAIL,
     FORGOT_PASSWORD_REQUEST,
     FORGOT_PASSWORD_SUCCESS,
     FORGOT_PASSWORD_FAIL,
@@ -50,6 +53,17 @@ export const register = (userData) => async (dispatch) => {
         });
     }
 
+};
+
+//load currently logged in user (restores session on page load)
+export const loadUser = () => async (dispatch) => {
+    try{
+        dispatch({type: LOAD_USER_REQUEST});
+        const {data} = await axios.get(`/api/v1/me`);
+        dispatch({type: LOAD_USER_SUCCESS, payload: data.user});
+    } catch(error){
+        dispatch({type: LOAD_USER_FAIL});
+    }
 };
 
 //logout

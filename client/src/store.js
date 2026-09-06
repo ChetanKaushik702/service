@@ -7,10 +7,20 @@ import {
 
 }from "./reducers/userReducer";
 import { forgotPasswordReducer } from "./reducers/forgotPasswordReducer";
+import {
+    listingsReducer,
+    listingDetailsReducer,
+    myListingsReducer,
+    newListingReducer,
+} from "./reducers/listingReducer";
 
 const reducer = combineReducers({
     user:userReducer,
     forgotPassword:forgotPasswordReducer,
+    listings: listingsReducer,
+    listingDetails: listingDetailsReducer,
+    myListings: myListingsReducer,
+    newListing: newListingReducer,
 });
 
 const middleware = [thunk];
