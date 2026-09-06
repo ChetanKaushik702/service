@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 import gsap from "gsap";
 import {
   Sparkles,
@@ -45,6 +46,7 @@ const steps = [
 ];
 
 export default function Home() {
+  const { isAuthenticated, user } = useSelector((state) => state.user);
   const containerRef = useRef(null);
   const logoRef = useRef(null);
   const headingRef = useRef(null);
@@ -80,9 +82,16 @@ export default function Home() {
             <Button size="lg" asChild>
               <Link to="/services">Browse Services</Link>
             </Button>
-            <Button size="lg" variant="outline" asChild>
-              <Link to="/register">Become a Professional</Link>
-            </Button>
+            {!isAuthenticated && (
+              <Button size="lg" variant="outline" asChild>
+                <Link to="/register">Become a Professional</Link>
+              </Button>
+            )}
+            {isAuthenticated && user?.role === "professional" && (
+              <Button size="lg" variant="outline" asChild>
+                <Link to="/professional/listings">My Listings</Link>
+              </Button>
+            )}
           </div>
         </section>
 
