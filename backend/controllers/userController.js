@@ -132,7 +132,7 @@ const forgotPassword = AsyncErrorHandler(async (req, res, next) => {
     try {
         await sendEmail({
             email: user.email,
-            subject: 'ServiceFare password recovery',
+            subject: 'ServeWell password recovery',
             message
         });
 

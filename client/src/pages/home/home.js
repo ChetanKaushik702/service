@@ -69,12 +69,12 @@ export default function Home() {
       <Header />
       <div ref={containerRef} className="bg-background">
         <section className="container flex flex-col items-center gap-6 py-20 text-center">
-          <img ref={logoRef} src={logo} alt="ServiceFare logo" className="h-20 w-20" />
+          <img ref={logoRef} src={logo} alt="ServeWell logo" className="h-20 w-20" />
           <h1 ref={headingRef} className="text-4xl font-bold tracking-tight sm:text-5xl">
             Find trusted professionals for any service
           </h1>
           <p className="max-w-2xl text-lg text-muted-foreground">
-            ServiceFare connects you with skilled professionals for home
+            ServeWell connects you with skilled professionals for home
             services, tutoring, photography, and more &mdash; or list your own
             services and start getting booked.
           </p>

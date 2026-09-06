@@ -107,7 +107,7 @@ function Header() {
       <div className="container flex h-16 items-center justify-between">
         <Link to="/" className="flex items-center gap-2">
           <img src={logo} alt="" className="h-9 w-9" />
-          <span className="text-lg font-bold">ServiceFare</span>
+          <span className="text-lg font-bold">ServeWell</span>
         </Link>
 
         <nav className="hidden items-center gap-6 md:flex">
@@ -131,7 +131,7 @@ function Header() {
         <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
           <SheetContent side="right" className="w-3/4">
             <SheetHeader>
-              <SheetTitle>ServiceFare</SheetTitle>
+              <SheetTitle>ServeWell</SheetTitle>
             </SheetHeader>
             <div className="mt-6 flex flex-col gap-4">
               <NavLinks onNavigate={() => setMobileOpen(false)} />
