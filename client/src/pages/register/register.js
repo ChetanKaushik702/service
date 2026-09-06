@@ -82,7 +82,7 @@ function Register() {
               <CardHeader>
                 <CardTitle>Create an account</CardTitle>
                 <CardDescription>
-                  Join ServiceFare to book or offer services.
+                  Join ServeWell to book or offer services.
                 </CardDescription>
               </CardHeader>
               <CardContent>
