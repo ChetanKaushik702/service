@@ -17,6 +17,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 function Register() {
   const { error, loading, isAuthenticated } = useSelector(
@@ -29,6 +30,7 @@ function Register() {
     name: "",
     email: "",
     password: "",
+    role: "user",
   });
   const cardRef = useRef(null);
 
@@ -47,11 +49,16 @@ function Register() {
     formData.append("password", user.password);
     formData.append("email", user.email);
     formData.append("name", user.name);
+    formData.append("role", user.role);
     dispatch(register(formData));
   };
 
   const handleChange = (e) => {
     setNewUser({ ...user, [e.target.name]: e.target.value });
+  };
+
+  const handleRoleChange = (value) => {
+    setNewUser({ ...user, role: value });
   };
 
   useEffect(() => {
@@ -120,6 +127,29 @@ function Register() {
                       value={user.password}
                       onChange={handleChange}
                     />
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <Label>I want to</Label>
+                    <RadioGroup
+                      value={user.role}
+                      onValueChange={handleRoleChange}
+                      className="grid grid-cols-2 gap-2"
+                    >
+                      <Label
+                        htmlFor="role-user"
+                        className="flex cursor-pointer items-center gap-2 rounded-md border p-3 text-sm font-normal has-[[data-state=checked]]:border-primary"
+                      >
+                        <RadioGroupItem value="user" id="role-user" />
+                        Find services
+                      </Label>
+                      <Label
+                        htmlFor="role-professional"
+                        className="flex cursor-pointer items-center gap-2 rounded-md border p-3 text-sm font-normal has-[[data-state=checked]]:border-primary"
+                      >
+                        <RadioGroupItem value="professional" id="role-professional" />
+                        Offer services
+                      </Label>
+                    </RadioGroup>
                   </div>
                   <Button type="submit" className="w-full">
                     Register
