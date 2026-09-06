@@ -1,6 +1,7 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useAlert } from "react-alert";
+import gsap from "gsap";
 import Header from "../../components/header/header";
 import Loader from "../../components/Loader/Loader";
 import { clearErrors, forgotPassword } from "../../actions/userAction";
@@ -20,6 +21,16 @@ function ForgotPassword() {
   const alert = useAlert();
   const { error, message, loading } = useSelector((state) => state.forgotPassword);
   const [email, setEmail] = useState("");
+  const cardRef = useRef(null);
+
+  useEffect(() => {
+    if (!loading && cardRef.current) {
+      const ctx = gsap.context(() => {
+        gsap.from(cardRef.current, { opacity: 0, y: 20, duration: 0.5, ease: "power3.out" });
+      });
+      return () => ctx.revert();
+    }
+  }, [loading]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -44,7 +55,7 @@ function ForgotPassword() {
         <Fragment>
           <Header />
           <div className="container flex min-h-[calc(100vh-4rem)] items-center justify-center py-12">
-            <Card className="w-full max-w-sm">
+            <Card ref={cardRef} className="w-full max-w-sm">
               <CardHeader>
                 <CardTitle>Forgot Password</CardTitle>
                 <CardDescription>

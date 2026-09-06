@@ -1,5 +1,6 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
+import gsap from "gsap";
 import {
   Sparkles,
   Wrench,
@@ -49,6 +50,17 @@ export default function Home() {
   const headingRef = useRef(null);
   const ctaRef = useRef(null);
   const cardsRef = useRef(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+      tl.from(logoRef.current, { opacity: 0, y: -20, scale: 0.85, duration: 0.7 })
+        .from(headingRef.current, { opacity: 0, y: 20, duration: 0.6 }, "-=0.3")
+        .from(ctaRef.current, { opacity: 0, y: 20, duration: 0.5 }, "-=0.3")
+        .from(cardsRef.current.children, { opacity: 0, y: 20, duration: 0.5, stagger: 0.08 }, "-=0.2");
+    }, containerRef);
+    return () => ctx.revert();
+  }, []);
 
   return (
     <>

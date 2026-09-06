@@ -1,5 +1,6 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useEffect, useRef, useState } from "react";
 import { Link, useHistory, useLocation } from "react-router-dom";
+import gsap from "gsap";
 import Loader from "../../components/Loader/Loader";
 import { useDispatch, useSelector } from "react-redux";
 import { clearErrors, login } from "../../actions/userAction";
@@ -29,6 +30,16 @@ export default function Login() {
 
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
+  const cardRef = useRef(null);
+
+  useEffect(() => {
+    if (!loading && cardRef.current) {
+      const ctx = gsap.context(() => {
+        gsap.from(cardRef.current, { opacity: 0, y: 20, duration: 0.5, ease: "power3.out" });
+      });
+      return () => ctx.revert();
+    }
+  }, [loading]);
 
   const loginSubmit = (e) => {
     e.preventDefault();
@@ -55,7 +66,7 @@ export default function Login() {
         <Fragment>
           <Header />
           <div className="container flex min-h-[calc(100vh-4rem)] items-center justify-center py-12">
-            <Card className="w-full max-w-sm">
+            <Card ref={cardRef} className="w-full max-w-sm">
               <CardHeader>
                 <CardTitle>Login</CardTitle>
                 <CardDescription>
